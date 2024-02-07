@@ -1,4 +1,4 @@
-name: Get pods
+name: Get pods, svc, endpoints
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀 
 on: [push]
 
@@ -10,11 +10,22 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - uses: actions-hub/kubectl@master
+        name: get pods
         env:
           KUBE_CONFIG: ${{ secrets.PILOT_KUBE_CONFIG }}
         with:
           args: get pods
-          
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.PILOT_KUBE_CONFIG }}
+        with:
+          args: get svc  
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.PILOT_KUBE_CONFIG }}
+        with:
+          args: get endpoints    
+
       - name: Output Run ID
         run: echo ${{ github.run_id }}
       - name: Output Run Number
